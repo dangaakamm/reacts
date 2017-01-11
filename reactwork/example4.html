@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="bulidss/react.js"></script>
+    <script src="bulidss/react-dom.js"></script>
+</head>
+<body>
+<div id="example"></div>
+<script src="bulidss/babel.js"></script>
+<script src="bulidss/remarkable.min.js"></script>
+<script type="text/babel">
+    class MarkdownEditor extends React.Component {
+        constructor(props) {
+            super(props);
+            this.handleChange = this.handleChange.bind(this);
+            this.state = {value: 'write here'};
+        }
+
+        handleChange() {
+            this.setState({value: this.refs.textarea.value});
+            //ref : 绑定属性
+            //refs : 调用的时候使用
+        }
+
+        getRawMarkup() {
+            var md = new Remarkable();
+            return { __html: md.render(this.state.value) };
+        }
+
+        render() {
+            return (
+                    <div className="MarkdownEditor">
+                        <h3>Input</h3>
+                        <textarea
+                                onChange={this.handleChange}
+                                ref="textarea"
+                                defaultValue={this.state.value} />
+                        <h3>Output</h3>
+                        <div
+                                className="content"
+                                dangerouslySetInnerHTML={this.getRawMarkup()}
+                        />
+                    </div>
+            );
+        }
+    }
+
+    ReactDOM.render(<MarkdownEditor />, document.getElementById("example"));
+</script>
+</body>
+</html>
